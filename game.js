@@ -3,8 +3,9 @@ const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
 const WORD_SPAWN_DELAY = 3000; // ms
 const INITIAL_WORD_SPEED = 1;
-const SPEED_INCREMENT = 0.05; // Gradual speed increase per second
+const SPEED_INCREMENT = 0.02; // Reduced gradual speed increase per second
 const SPEED_INCREMENT_INTERVAL = 1000; // Apply speed increase every second
+const MAX_SPEED = 2.5; // Maximum speed cap
 const WORD_COUNT_THRESHOLD = 0.5; // Speed threshold for adding extra words
 
 // Game variables
@@ -90,7 +91,11 @@ function gameLoop() {
         
         // Gradually increase speed over time
         if (currentTime - lastSpeedIncreaseTime > SPEED_INCREMENT_INTERVAL) {
-            currentSpeed += SPEED_INCREMENT;
+            if (currentSpeed < MAX_SPEED) {
+                currentSpeed += SPEED_INCREMENT;
+                // Cap the speed at MAX_SPEED
+                currentSpeed = Math.min(currentSpeed, MAX_SPEED);
+            }
             lastSpeedIncreaseTime = currentTime;
         }
         
@@ -175,6 +180,8 @@ function checkWord(typedWord) {
             if (score % 5 === 0) {
                 level++;
                 currentSpeed *= 1.1;
+                // Cap the speed at MAX_SPEED
+                currentSpeed = Math.min(currentSpeed, MAX_SPEED);
             }
             
             return true;

@@ -7,7 +7,7 @@ DIFFICULTY_SETTINGS = {
     "easy": {
         "word_speed": 0.7,
         "lives": 5,
-        "spawn_delay": 4000,
+        "spawn_delay": 3000,
         "word_length_max": 6
     },
     "medium": {
