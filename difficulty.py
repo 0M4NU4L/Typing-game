@@ -1,26 +1,29 @@
 """
-Difficulty settings for the typing game
+Retro difficulty settings for the typing game
 """
 
-# Difficulty presets
+# Difficulty presets optimized for smaller screen
 DIFFICULTY_SETTINGS = {
     "easy": {
-        "word_speed": 0.7,
+        "word_speed": 0.6,
         "lives": 5,
-        "spawn_delay": 3000,
-        "word_length_max": 6
+        "spawn_delay": 4000,
+        "word_length_max": 5,
+        "description": "BEGINNER FRIENDLY"
     },
     "medium": {
         "word_speed": 1.0,
         "lives": 3,
         "spawn_delay": 3000,
-        "word_length_max": 10
+        "word_length_max": 8,
+        "description": "BALANCED CHALLENGE"
     },
     "hard": {
         "word_speed": 1.5,
         "lives": 2,
-        "spawn_delay": 2000,
-        "word_length_max": 15
+        "spawn_delay": 2200,
+        "word_length_max": 12,
+        "description": "EXPERT MODE"
     }
 }
 
@@ -53,7 +56,17 @@ class DifficultyManager:
         """Get the word spawn delay for the current difficulty"""
         return self.settings["spawn_delay"]
     
+    def get_description(self):
+        """Get the difficulty description"""
+        return self.settings.get("description", "")
+    
     def filter_words_by_difficulty(self, word_list):
         """Filter words based on the current difficulty"""
         max_length = self.settings["word_length_max"]
-        return [word for word in word_list if len(word) <= max_length]
+        filtered = [word for word in word_list if len(word) <= max_length]
+        
+        # Ensure we have enough words
+        if len(filtered) < 10:
+            return word_list[:20]  # Fallback to first 20 words
+        
+        return filtered

@@ -4,16 +4,25 @@ from config import (
     SPEED_INCREASE_FACTOR,
     WORDS_FOR_LEVEL_UP,
     INPUT_FONT_SIZE,
-    WHITE,
-    RED,
-    GREEN
+    UI_FONT_SIZE,
+    RETRO_WHITE,
+    RETRO_RED,
+    RETRO_GREEN,
+    RETRO_CYAN,
+    RETRO_SURFACE,
+    RETRO_ACCENT,
+    RETRO_YELLOW,
+    WINDOW_WIDTH,
+    WINDOW_HEIGHT
 )
 
 class GameState:
     def __init__(self, difficulty_manager):
         self.difficulty_manager = difficulty_manager
         self.reset()
-        self.font = pygame.font.Font(None, INPUT_FONT_SIZE)
+        self.input_font = pygame.font.Font(None, INPUT_FONT_SIZE)
+        self.ui_font = pygame.font.Font(None, UI_FONT_SIZE)
+        self.title_font = pygame.font.Font(None, 40)
         self.start_time = 0
         self.total_chars_typed = 0
         self.correct_words = 0
@@ -55,102 +64,149 @@ class GameState:
 
     def calculate_wpm(self):
         """Calculate words per minute"""
-        elapsed_time = max(1, time.time() - self.start_time) / 60  # Convert to minutes
-        # Standard calculation: 5 characters = 1 word
+        elapsed_time = max(1, time.time() - self.start_time) / 60
         return int(self.total_chars_typed / 5 / elapsed_time)
         
+    def calculate_accuracy(self):
+        """Calculate typing accuracy"""
+        if self.total_chars_typed > 0:
+            return min(100, int((self.correct_words * 5 / max(1, self.total_chars_typed)) * 100))
+        return 0
+        
     def draw_ui(self, screen):
-        """Draw all UI elements including score, lives, and current input"""
-        # Draw score
-        score_text = self.font.render(f"Score: {self.score}", True, WHITE)
-        screen.blit(score_text, (10, 10))
-
-        # Draw lives
-        lives_text = self.font.render(f"Lives: {self.lives}", True, RED)
-        screen.blit(lives_text, (10, 40))
-
-        # Draw level
-        level_text = self.font.render(f"Level: {self.level}", True, WHITE)
-        screen.blit(level_text, (10, 70))
+        """Draw retro-style UI elements"""
+        # Create pixelated UI panel
+        panel_width = 200
+        panel_height = 120
+        panel_x = 10
+        panel_y = 10
         
-        # Draw WPM (Words Per Minute)
-        wpm_text = self.font.render(f"WPM: {self.calculate_wpm()}", True, WHITE)
-        screen.blit(wpm_text, (10, 100))
+        # Draw panel background
+        panel_rect = pygame.Rect(panel_x, panel_y, panel_width, panel_height)
+        pygame.draw.rect(screen, RETRO_SURFACE, panel_rect)
+        pygame.draw.rect(screen, RETRO_ACCENT, panel_rect, 2)
         
-        # Draw difficulty
-        diff_text = self.font.render(f"Difficulty: {self.difficulty_manager.current_difficulty.capitalize()}", True, WHITE)
-        screen.blit(diff_text, (10, 130))
-
-        # Draw text input area with label
-        label_font = pygame.font.Font(None, 24)
-        label_text = label_font.render("Type here:", True, WHITE)
-        screen.blit(label_text, (10, screen.get_height() - 80))
+        # UI text elements with retro styling
+        ui_elements = [
+            (f"SCORE: {self.score}", panel_x + 10, panel_y + 10, RETRO_WHITE),
+            (f"LIVES: {self.lives}", panel_x + 10, panel_y + 25, RETRO_RED if self.lives <= 1 else RETRO_WHITE),
+            (f"LEVEL: {self.level}", panel_x + 10, panel_y + 40, RETRO_CYAN),
+            (f"WPM: {self.calculate_wpm()}", panel_x + 10, panel_y + 55, RETRO_GREEN),
+            (f"ACC: {self.calculate_accuracy()}%", panel_x + 10, panel_y + 70, RETRO_YELLOW),
+            (f"MODE: {self.difficulty_manager.current_difficulty.upper()}", panel_x + 10, panel_y + 85, RETRO_WHITE)
+        ]
         
-        # Draw the input box
-        input_box_width = 400
-        input_box_height = 40
-        input_box_x = (screen.get_width() - input_box_width) // 2
-        input_box_y = screen.get_height() - 60
+        for text, x, y, color in ui_elements:
+            text_surface = self.ui_font.render(text, False, color)
+            screen.blit(text_surface, (x, y))
         
-        # Draw the input box background and border
-        pygame.draw.rect(screen, (50, 50, 50), (input_box_x, input_box_y, input_box_width, input_box_height))
-        pygame.draw.rect(screen, GREEN, (input_box_x, input_box_y, input_box_width, input_box_height), 2)
+        # Retro input box
+        input_box_width = 300
+        input_box_height = 30
+        input_box_x = (WINDOW_WIDTH - input_box_width) // 2
+        input_box_y = WINDOW_HEIGHT - 50
         
-        # Draw current input with cursor indicator
-        cursor_blink = int(pygame.time.get_ticks() / 500) % 2 == 0  # Blink every 500ms
+        # Input box with retro styling
+        input_rect = pygame.Rect(input_box_x, input_box_y, input_box_width, input_box_height)
+        pygame.draw.rect(screen, RETRO_SURFACE, input_rect)
+        pygame.draw.rect(screen, RETRO_ACCENT, input_rect, 2)
+        
+        # Input text with blinking cursor
+        cursor_blink = int(pygame.time.get_ticks() / 500) % 2 == 0
         display_text = self.current_input
-        if cursor_blink:
-            display_text += "|"
+        if cursor_blink and len(display_text) < 15:
+            display_text += "_"
             
-        input_text = self.font.render(display_text, True, GREEN)
-        screen.blit(input_text, (input_box_x + 10, input_box_y + 10))
+        input_text = self.input_font.render(display_text, False, RETRO_WHITE)
+        screen.blit(input_text, (input_box_x + 5, input_box_y + 5))
+        
+        # Level progress bar (retro style)
+        progress_width = 100
+        progress_height = 8
+        progress_x = WINDOW_WIDTH - progress_width - 20
+        progress_y = 20
+        
+        # Background
+        progress_bg = pygame.Rect(progress_x, progress_y, progress_width, progress_height)
+        pygame.draw.rect(screen, RETRO_SURFACE, progress_bg)
+        pygame.draw.rect(screen, RETRO_WHITE, progress_bg, 1)
+        
+        # Progress fill
+        progress = (WORDS_FOR_LEVEL_UP - self.words_until_level_up) / WORDS_FOR_LEVEL_UP
+        fill_width = int(progress_width * progress)
+        if fill_width > 0:
+            fill_rect = pygame.Rect(progress_x, progress_y, fill_width, progress_height)
+            pygame.draw.rect(screen, RETRO_CYAN, fill_rect)
+        
+        # Progress text
+        progress_text = self.ui_font.render(f"PROGRESS: {WORDS_FOR_LEVEL_UP - self.words_until_level_up}/{WORDS_FOR_LEVEL_UP}", False, RETRO_WHITE)
+        screen.blit(progress_text, (progress_x, progress_y + 12))
 
     def draw_menu(self, screen, is_game_over=False):
-        """Draw either start screen or game over screen"""
-        title_font = pygame.font.Font(None, 64)
-        info_font = pygame.font.Font(None, 32)
-
+        """Draw retro-style start screen or game over screen"""
+        center_x = WINDOW_WIDTH // 2
+        
         if is_game_over:
             # Game Over Screen
-            title = title_font.render("Game Over!", True, RED)
-            score = info_font.render(f"Final Score: {self.score}", True, WHITE)
-            wpm = info_font.render(f"Typing Speed: {self.calculate_wpm()} WPM", True, WHITE)
-            accuracy = 0
-            if self.total_chars_typed > 0:
-                # Simple accuracy calculation based on correct words vs total characters typed
-                accuracy = min(100, int((self.correct_words * 5 / max(1, self.total_chars_typed)) * 100))
-            acc_text = info_font.render(f"Accuracy: {accuracy}%", True, WHITE)
-            prompt = info_font.render("Press any key to play again", True, WHITE)
+            title = self.title_font.render("GAME OVER", False, RETRO_RED)
+            title_rect = title.get_rect(center=(center_x, 100))
+            screen.blit(title, title_rect)
             
-            # Center all text elements
-            center_x = screen.get_width() // 2
-            screen.blit(title, title.get_rect(center=(center_x, 150)))
-            screen.blit(score, score.get_rect(center=(center_x, 250)))
-            screen.blit(wpm, wpm.get_rect(center=(center_x, 300)))
-            screen.blit(acc_text, acc_text.get_rect(center=(center_x, 350)))
-            screen.blit(prompt, prompt.get_rect(center=(center_x, 450)))
+            # Retro border around title
+            border_rect = pygame.Rect(title_rect.x - 10, title_rect.y - 5, title_rect.width + 20, title_rect.height + 10)
+            pygame.draw.rect(screen, RETRO_RED, border_rect, 2)
+            
+            # Stats with retro formatting
+            stats = [
+                (f"FINAL SCORE: {self.score}", 160),
+                (f"TYPING SPEED: {self.calculate_wpm()} WPM", 190),
+                (f"ACCURACY: {self.calculate_accuracy()}%", 220),
+                (f"LEVEL REACHED: {self.level}", 250)
+            ]
+            
+            for text, y in stats:
+                stat_surface = self.input_font.render(text, False, RETRO_WHITE)
+                stat_rect = stat_surface.get_rect(center=(center_x, y))
+                screen.blit(stat_surface, stat_rect)
+            
+            prompt = self.ui_font.render("PRESS ANY KEY TO PLAY AGAIN", False, RETRO_CYAN)
+            prompt_rect = prompt.get_rect(center=(center_x, 320))
+            screen.blit(prompt, prompt_rect)
+            
         else:
             # Start Screen
-            title = title_font.render("Typing Speed Game", True, WHITE)
-            score = info_font.render("Type the falling words in the text box", True, WHITE)
-            instruction = info_font.render("Press Enter to submit your answer", True, WHITE)
-            prompt = info_font.render("Press any key to start", True, WHITE)
+            title = self.title_font.render("RETRO TYPER", False, RETRO_WHITE)
+            title_rect = title.get_rect(center=(center_x, 80))
+            screen.blit(title, title_rect)
             
-            # Center all text elements
-            center_x = screen.get_width() // 2
-            screen.blit(title, title.get_rect(center=(center_x, 180)))
-            screen.blit(score, score.get_rect(center=(center_x, 260)))
-            screen.blit(instruction, instruction.get_rect(center=(center_x, 300)))
-            screen.blit(prompt, prompt.get_rect(center=(center_x, 400)))
+            # Retro border around title
+            border_rect = pygame.Rect(title_rect.x - 10, title_rect.y - 5, title_rect.width + 20, title_rect.height + 10)
+            pygame.draw.rect(screen, RETRO_CYAN, border_rect, 2)
             
-            # Draw example text box
-            example_box_width = 300
-            example_box_height = 40
-            example_box_x = (screen.get_width() - example_box_width) // 2
-            example_box_y = 340
+            instructions = [
+                "TYPE THE FALLING WORDS",
+                "PRESS ENTER TO SUBMIT",
+                "COLLECT POWER-UPS!",
+                "",
+                "PRESS ANY KEY TO START"
+            ]
             
-            pygame.draw.rect(screen, (50, 50, 50), (example_box_x, example_box_y, example_box_width, example_box_height))
-            pygame.draw.rect(screen, GREEN, (example_box_x, example_box_y, example_box_width, example_box_height), 2)
+            for i, instruction in enumerate(instructions):
+                if instruction:
+                    color = RETRO_CYAN if i == len(instructions) - 1 else RETRO_WHITE
+                    inst_surface = self.ui_font.render(instruction, False, color)
+                    inst_rect = inst_surface.get_rect(center=(center_x, 140 + i * 25))
+                    screen.blit(inst_surface, inst_rect)
             
-            example_text = info_font.render("example", True, GREEN)
-            screen.blit(example_text, (example_box_x + 10, example_box_y + 10))
+            # Example input box
+            example_width = 200
+            example_height = 25
+            example_x = (WINDOW_WIDTH - example_width) // 2
+            example_y = 280
+            
+            example_rect = pygame.Rect(example_x, example_y, example_width, example_height)
+            pygame.draw.rect(screen, RETRO_SURFACE, example_rect)
+            pygame.draw.rect(screen, RETRO_CYAN, example_rect, 2)
+            
+            example_text = self.input_font.render("example", False, RETRO_WHITE)
+            screen.blit(example_text, (example_x + 5, example_y + 3))
