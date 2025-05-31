@@ -4,14 +4,14 @@
   "description": "A retro-style typing speed game for web browsers",
   "main": "index.html",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "serve .",
     "build": "echo 'Static site - no build needed'",
-    "start": "vercel dev"
+    "start": "serve ."
   },
   "keywords": ["typing", "game", "retro", "web", "javascript", "canvas"],
   "author": "Retro Typer Team",
   "license": "MIT",
   "devDependencies": {
-    "vercel": "^32.0.0"
+    "serve": "^14.0.0"
   }
 }

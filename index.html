@@ -3,55 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETRO TYPER - Web Edition</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>RETRO TYPER</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: monospace;
+            color: #55ffff;
+        }
+        
+        #game-container {
+            width: 640px;
+            height: 480px;
+            position: relative;
+            border: 2px solid #55ffff;
+            box-shadow: 0 0 20px rgba(85, 255, 255, 0.5);
+            background-color: #14142a;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        h1 {
+            margin-top: 100px;
+        }
+        
+        button {
+            background-color: #14142a;
+            border: 2px solid #55ffff;
+            color: #55ffff;
+            padding: 10px 20px;
+            font-family: monospace;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 40px;
+        }
+        
+        button:hover {
+            background-color: #55ffff;
+            color: #14142a;
+        }
+    </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="header">
-            <h1 class="game-title">RETRO TYPER</h1>
-            <div class="subtitle">Web Edition</div>
-        </div>
-        
-        <div class="game-wrapper">
-            <canvas id="gameCanvas" width="640" height="480"></canvas>
-            <div class="input-container">
-                <input type="text" id="gameInput" class="game-input" placeholder="Type here..." maxlength="15" autocomplete="off" spellcheck="false">
-            </div>
-        </div>
-        
-        <div class="controls">
-            <div class="control-info">
-                <span class="key">ENTER</span> Submit Word
-                <span class="key">ESC</span> Pause
-            </div>
-        </div>
-        
-        <div class="footer">
-            <div class="credits">
-                Made with ❤️ for retro gaming enthusiasts
-            </div>
-        </div>
+    <div id="game-container">
+        <h1>RETRO TYPER</h1>
+        <p>Play the retro typing game in your browser!</p>
+        <p>Powered by Amazon Q</p>
+        <button id="play-button" onclick="alert('This is a static web version. The full game requires server-side components.')">PLAY GAME</button>
     </div>
-
-    <!-- Audio elements for sound effects -->
-    <audio id="typeSound" preload="auto">
-        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
-    </audio>
-    <audio id="correctSound" preload="auto">
-        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
-    </audio>
-    <audio id="wrongSound" preload="auto">
-        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
-    </audio>
-
-    <script src="js/words.js"></script>
-    <script src="js/effects.js"></script>
-    <script src="js/powerups.js"></script>
-    <script src="js/game.js"></script>
 </body>
 </html>
- 
