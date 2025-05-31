@@ -1,17 +1,12 @@
 {
-  "name": "retro-typer-web",
+  "name": "retro-typer",
   "version": "1.0.0",
   "description": "A retro-style typing speed game for web browsers",
   "main": "index.html",
   "scripts": {
-    "dev": "serve .",
-    "build": "echo 'Static site - no build needed'",
-    "start": "serve ."
+    "build": "echo 'No build step needed'"
   },
-  "keywords": ["typing", "game", "retro", "web", "javascript", "canvas"],
+  "keywords": ["typing", "game", "retro"],
   "author": "Retro Typer Team",
-  "license": "MIT",
-  "devDependencies": {
-    "serve": "^14.0.0"
-  }
+  "license": "MIT"
 }

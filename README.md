@@ -1,6 +1,6 @@
 # RETRO TYPER
 
-A retro-style typing game with falling words and power-ups.
+A retro-style typing game with falling words.
 
 ## How to Play
 
@@ -11,30 +11,22 @@ python main.py
 ```
 
 ### Web Browser Version
-To play the game in a web browser:
+Open the index.html file in your browser or deploy to a web server.
 
-1. Run the web launcher:
-```
-python web_game.py
-```
-
-2. This will start a local web server and open your default browser.
-
-3. Click the "PLAY GAME" button to launch the game.
-
-4. To stop the server, press Ctrl+C in the terminal where you started it.
+For Vercel deployment:
+1. Push the code to a GitHub repository
+2. Connect the repository to Vercel
+3. Deploy
 
 ## Game Controls
 
 - Type the falling words and press Enter to submit
-- Collect power-ups for special abilities:
-  - Freeze: Temporarily stops words from falling
-  - Clear: Removes all words from the screen
-  - Life: Gives you an extra life
-  - Shield: Temporarily protects you from missed words
+- Select difficulty level at the start (1-Easy, 2-Medium, 3-Hard)
 
 ## Difficulty Levels
 
 - Easy: Slower words, 5 lives
 - Medium: Normal speed, 3 lives
 - Hard: Fast words, 2 lives
+
+Powered by Amazon Q

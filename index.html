@@ -14,48 +14,66 @@
             align-items: center;
             height: 100vh;
             font-family: monospace;
-            color: #55ffff;
+            overflow: hidden;
         }
         
         #game-container {
+            position: relative;
             width: 640px;
             height: 480px;
-            position: relative;
-            border: 2px solid #55ffff;
+        }
+        
+        #game-canvas {
+            display: block;
+            background-color: #14142a;
             box-shadow: 0 0 20px rgba(85, 255, 255, 0.5);
-            background-color: #14142a;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        
-        h1 {
-            margin-top: 100px;
-        }
-        
-        button {
-            background-color: #14142a;
             border: 2px solid #55ffff;
-            color: #55ffff;
-            padding: 10px 20px;
-            font-family: monospace;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 40px;
         }
         
-        button:hover {
-            background-color: #55ffff;
-            color: #14142a;
+        #input-container {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 30px;
+            background-color: #282850;
+            border: 2px solid #55ffff;
+            display: none;
+        }
+        
+        #word-input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: monospace;
+            font-size: 20px;
+            padding: 0 5px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        
+        .powered-by {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #55ffff;
+            font-size: 12px;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
     <div id="game-container">
-        <h1>RETRO TYPER</h1>
-        <p>Play the retro typing game in your browser!</p>
-        <p>Powered by Amazon Q</p>
-        <button id="play-button" onclick="alert('This is a static web version. The full game requires server-side components.')">PLAY GAME</button>
+        <canvas id="game-canvas" width="640" height="480"></canvas>
+        <div id="input-container">
+            <input type="text" id="word-input" maxlength="15" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        </div>
+        <div class="powered-by">Powered by Amazon Q</div>
     </div>
+    
+    <script src="game-min.js"></script>
 </body>
 </html>
