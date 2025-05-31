@@ -1,0 +1,17 @@
+{
+  "name": "retro-typer-web",
+  "version": "1.0.0",
+  "description": "A retro-style typing speed game for web browsers",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "start": "vercel dev"
+  },
+  "keywords": ["typing", "game", "retro", "web", "javascript", "canvas"],
+  "author": "Retro Typer Team",
+  "license": "MIT",
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  }
+}

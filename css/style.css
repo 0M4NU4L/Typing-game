@@ -1,0 +1,193 @@
+/* Retro CSS Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Press Start 2P", monospace;
+  background: linear-gradient(45deg, #0f0f23, #1a1a2e);
+  color: #55ffff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.game-title {
+  font-size: 24px;
+  color: #55ffff;
+  text-shadow: 0 0 5px #55ffff, 0 0 10px #55ffff, 0 0 15px #55ffff;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-size: 8px;
+  color: #ff55ff;
+  letter-spacing: 1px;
+}
+
+.game-wrapper {
+  position: relative;
+  border: 4px solid #55ffff;
+  border-radius: 8px;
+  background: #0f0f23;
+  box-shadow: 0 0 20px rgba(85, 255, 255, 0.3), inset 0 0 20px rgba(85, 255, 255, 0.1);
+}
+
+#gameCanvas {
+  display: block;
+  background: #141428;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.input-container {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+}
+
+.game-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+  background: rgba(20, 20, 40, 0.9);
+  border: 2px solid #55ffff;
+  border-radius: 4px;
+  color: #ffffff;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.game-input:focus {
+  border-color: #ff55ff;
+  box-shadow: 0 0 10px rgba(255, 85, 255, 0.5), inset 0 0 10px rgba(255, 85, 255, 0.1);
+}
+
+.game-input::placeholder {
+  color: #666;
+  opacity: 0.7;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.control-info {
+  font-size: 8px;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.key {
+  background: #333;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 2px 6px;
+  color: #fff;
+  font-size: 8px;
+  margin-right: 5px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.credits {
+  font-size: 6px;
+  color: #666;
+  letter-spacing: 1px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .game-container {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .game-title {
+    font-size: 18px;
+  }
+
+  .subtitle {
+    font-size: 6px;
+  }
+
+  #gameCanvas {
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+  }
+
+  .input-container {
+    width: 250px;
+  }
+
+  .game-input {
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+}
+
+/* Retro animations */
+@keyframes glow {
+  0%,
+  100% {
+    text-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+}
+
+.game-title {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Scanline effect */
+.game-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
